@@ -43,6 +43,7 @@ dependencies:
   freezed: ^4.0.1 #генерация для Bloc
   bloc: ^9.2.1
   flutter_bloc: ^9.1.1
+  # pinput: ^6.0.2
 
 #иконка приложения
 flutter_launcher_icons:

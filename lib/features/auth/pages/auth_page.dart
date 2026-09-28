@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_pair/features/auth/blocs/auth_bloc.dart';
-import 'package:movie_pair/features/auth/blocs/auth_event.dart';
-import 'package:movie_pair/features/auth/blocs/auth_state.dart';
+import 'package:movie_pair/features/auth/bloc/auth_bloc.dart';
+import 'package:movie_pair/features/auth/bloc/auth_event.dart';
+import 'package:movie_pair/features/auth/bloc/auth_state.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -71,7 +71,7 @@ class _AuthPageState extends State<AuthPage> {
           _showError(state.error);
         }
         if (state is Authenticated) {
-          Navigator.of(context).pushReplacementNamed('/home');
+          Navigator.of(context).pushReplacementNamed('/profile');
         }
       },
       builder: (context, state) {

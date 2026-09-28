@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_pair/core/di/injection_conteiner.dart' as di;
-import 'package:movie_pair/features/auth/blocs/auth_bloc.dart';
-import 'package:movie_pair/features/auth/blocs/auth_event.dart';
-import 'package:movie_pair/features/auth/blocs/auth_state.dart';
+import 'package:movie_pair/features/auth/bloc/auth_bloc.dart';
+import 'package:movie_pair/features/auth/bloc/auth_event.dart';
+import 'package:movie_pair/features/auth/bloc/auth_state.dart';
 import 'package:movie_pair/features/auth/pages/auth_page.dart';
-import 'package:movie_pair/features/home/page/home_page.dart';
+import 'package:movie_pair/features/emailVerificated/bloc/verify_email_bloc.dart';
+import 'package:movie_pair/features/emailVerificated/page/verify_page.dart';
+import 'package:movie_pair/features/profile/bloc/profile_bloc.dart';
+import 'package:movie_pair/features/profile/bloc/profile_event.dart';
+import 'package:movie_pair/features/profile/pages/profile_page.dart';
+import 'package:movie_pair/features/settings/settings_page.dart';
 import 'package:movie_pair/services/first_screen.dart';
 import 'package:movie_pair/services/splash_screen.dart';
 
@@ -22,7 +27,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => di.getIt<AuthBloc>()..add(AuthEvent.checkAuthStatus()))
+        BlocProvider(
+          create: (context) =>
+              di.getIt<AuthBloc>()..add(AuthEvent.checkAuthStatus()),
+        ),
       ],
       child: MaterialApp(
         title: 'MoviePair',
@@ -32,20 +40,33 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state){
+            builder: (context, state) {
               return state.when(
                 initial: () => SplashScreen(),
-                loading:() => SplashScreen(),
-                authenticated:()=> HomePage(), 
-                unauthenticated: () => FirstScreen(), 
-                error: (message) => Scaffold(
-                  body: Center(
-                    child: Text('Упс... $message' ,),
-                  ),
-                ));
-            }),
+                loading: () => SplashScreen(),
+                authenticated: () => BlocProvider<ProfileBloc>(
+                  create: (context) =>
+                      di.getIt<ProfileBloc>()..add(ProfileEvent.load()),
+                  child: ProfilePage(),
+                ),
+                unauthenticated: () => FirstScreen(),
+                error: (message) =>
+                    Scaffold(body: Center(child: Text('Упс... $message'))),
+              );
+            },
+          ),
           '/auth': (context) => const AuthPage(),
-          '/home': (context) => const HomePage(),
+          '/settings': (context) =>
+              const SettingsPage(), //TODO: оформить настройки(тут скоро будут настройки)
+          '/profile': (context) => BlocProvider<ProfileBloc>(
+            create: (context) =>
+                di.getIt<ProfileBloc>()..add(ProfileEvent.load()),
+            child: ProfilePage(),
+          ),
+          '/email-verificated': (context) => BlocProvider(
+            create: (context) => di.getIt<VerifyEmailBloc>(),
+            child: VerifyPage(),
+          ),
         },
       ),
     );

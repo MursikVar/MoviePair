@@ -30,10 +30,25 @@ ErrorHeandler? dioError(DioException e) {
             message: 'Кажется наш сервер отдыхает вместе с разработчком :)',
             statusCode: 404,
           );
+          case 401:
+          return ErrorHeandler(
+            message: 'Вы не авторизовались :(',
+            statusCode: 401,
+          );
         case 422:
           return ErrorHeandler(
             message: 'Кажется эта задача слишком сложна для меня :(',
             statusCode: 422,
+          );
+        case 500:
+          return ErrorHeandler(
+            message: 'Внутренняя ошибка сервера :(',
+            statusCode: 500,
+          );
+        default: 
+          return ErrorHeandler(
+            message: 'Ошибка сервера ($statusCode) :(',
+            statusCode: statusCode,
           );
       }
 

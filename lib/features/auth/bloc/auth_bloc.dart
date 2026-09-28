@@ -1,6 +1,6 @@
 import 'package:movie_pair/core/security/security_storage.dart';
-import 'package:movie_pair/features/auth/blocs/auth_event.dart';
-import 'package:movie_pair/features/auth/blocs/auth_state.dart';
+import 'package:movie_pair/features/auth/bloc/auth_event.dart';
+import 'package:movie_pair/features/auth/bloc/auth_state.dart';
 import 'package:movie_pair/features/auth/model/login/auth_login.dart';
 import 'package:movie_pair/features/auth/model/registr/auth_register.dart';
 import 'package:movie_pair/features/auth/repos/auth_repository.dart';
